@@ -6,6 +6,6 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-chrono = "0.4.23"
 inputbot = { git = "https://github.com/obv-mikhail/InputBot", branch = "develop" }
-tungstenite = "0.18.0"
+message-io = "0.14.6"
+url = "2.3.1"
