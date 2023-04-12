@@ -58,7 +58,6 @@ fn main() {
 
     thread::spawn(inputbot::handle_input_events);
 
-
     listener.for_each(move |event| match event {
         NodeEvent::Network(net_event) => match net_event {
             NetEvent::Connected(_endpoint, _ok) => {}

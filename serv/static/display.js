@@ -4,21 +4,17 @@ let keysQueue = [],
     content;
 
 function getSymbol({ key, shift }) {
-    const SYMS = {
-        Numpad0: '0', Numpad1: '1', Numpad2: '2', Numpad3: '3', Numpad4: '4', Numpad5: '5', Numpad6: '6', Numpad7: '7', Numpad8: '8', Numpad9: '9',
-        Numrow0: '0', Numrow1: '1', Numrow2: '2', Numrow3: '3', Numrow4: '4', Numrow5: '5', Numrow6: '6', Numrow7: '7', Numrow8: '8', Numrow9: '9',
-        Backslash: '\\', Slash: '/', Comma: ',', Period: '.', Minus: '-', Quote: '"', Semicolon: ';', LBracket: '[',
-        RBracket: ']', Equal: '=', Backquote: '`', Enter: '↴', Backspace: '⌫', Space: '⎵', Delete: '<Del>',
-    };
+    const ALL_KEYS = {
+        Numpad0: ['0', '0'], Numpad1: ['1', '1'], Numpad2: ['2', '2'], Numpad3: ['3', '3'], Numpad4: ['4', '4'],
+        Numpad5: ['5', '5'], Numpad6: ['6', '6'], Numpad7: ['7', '7'], Numpad8: ['8', '8'], Numpad9: ['9', '9'],
+        Numrow0: ['0', ')'], Numrow1: ['1', '!'], Numrow2: ['2', '@'], Numrow3: ['3', '#'], Numrow4: ['4', '$'],
+        Numrow5: ['5', '%'], Numrow6: ['6', '^'], Numrow7: ['7', '&'], Numrow8: ['8', '*'], Numrow9: ['9', '('],
+        Backslash: ['\\', '|'], Slash: ['/', '?'], Comma: [',', '<'], Period: ['.', '>'], Minus: ['-', '_'],
+        Quote: ['\'', '\"'], Semicolon: [';', ':'], LBracket: ['[', '{'], RBracket: [']', '}'], Equal: ['=', '+'],
+        Backquote: ['`', '~'], Enter: ['↴', '↴'], Backspace: ['⌫', '⌫'], Space: ['⎵', '⎵'], Delete: ['<Del>', '<Del>'],
+    }
 
-    const SHIFT_SYMS = {
-        Numpad0: '0', Numpad1: '1', Numpad2: '2', Numpad3: '3', Numpad4: '4', Numpad5: '5', Numpad6: '6', Numpad7: '7', Numpad8: '8', Numpad9: '9',
-        Numrow0: ')', Numrow1: '!', Numrow2: '@', Numrow3: '#', Numrow4: '$', Numrow5: '%', Numrow6: '^', Numrow7: '&', Numrow8: '*', Numrow9: '(',
-        Backslash: '|', Slash: '?', Comma: '<', Period: '>', Minus: '_', Quote: '\"', Semicolon: ':', LBracket: '{',
-        RBracket: '}', Equal: '+', Backquote: '~', Enter: '↴', Backspace: '⌫', Space: '⎵', Delete: '<Del>',
-    };
-
-    return shift ? SHIFT_SYMS[key] : SYMS[key];
+    return ALL_KEYS[key][shift ? 1 : 0];
 }
 
 function getKey({ key, ctrl, shift }) {
