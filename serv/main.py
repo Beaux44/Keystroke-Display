@@ -1,7 +1,7 @@
 from typing import Any, Dict, Optional
 from fastapi import FastAPI, WebSocket
 from fastapi.staticfiles import StaticFiles
-import bson, json
+import bson
 from starlette import websockets
 
 app = FastAPI()
