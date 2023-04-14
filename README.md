@@ -10,11 +10,8 @@ https://user-images.githubusercontent.com/23005874/231338090-107b908e-7d72-41b1-
 I plan on releasing binaries eventually, but for now:
 
 1. Clone or download repo
-2. Optionally create a python venv (tested in 3.11, but should be compatible with earlier versions)
-3. Run `pip install -r requirements.txt` in terminal
-4. Enter `serv` directory and run `uvicorn main:app --port 80`
-5. In another terminal (or after backgrounding the previous task), `cargo run`
-6. In OBS, add `http://127.0.0.1:80/static/index.html` as a Browser Source
+2. Run `cargo run`
+3. In OBS, add a Browser Source, set it to use a `local file`, and point it to `overlay/index.html`
 
 ---
 ## Important Notes
