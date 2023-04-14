@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: sudo apt-get install libudev-dev
+      - run: sudo apt-get install libudev-dev libxtst-dev libxext-dev xorg-dev
       - uses: github/super-linter@v5.0.0
         env:
           DEFAULT_BRANCH: main
@@ -23,19 +23,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: sudo apt-get install libudev-dev
+      - run: sudo apt-get install libudev-dev libxtst-dev libxext-dev xorg-dev
       - name: Build
         run: cargo build --verbose
   win-build:
     runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Build
-        run: cargo build --verbose
-        env:
-          RUST_TRACEBACK: 1
-  mac-build:
-    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
       - name: Build
