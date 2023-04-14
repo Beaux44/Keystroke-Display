@@ -1,20 +1,10 @@
-use std::time::Duration;
 use inputbot::{KeybdKey, KeybdKey::*};
 use inputbot;
-use message_io::node::{self, NodeEvent, NodeHandler};
+use message_io::node::{self, NodeEvent};
 use message_io::network::{NetEvent, Transport, Endpoint};
 use serde::{Serialize, Deserialize};
-use std::{thread, process};
+use std::thread;
 
-
-macro_rules! unwrap_or_return {
-    ( $e: expr ) => {
-        match $e {
-            Ok(res) => res,
-            Err(_) => return
-        }
-    }
-}
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(tag = "event")]
@@ -22,25 +12,16 @@ enum Signal {
     KeyPress{ key: String, ctrl: bool, shift: bool },
 }
 
-fn connect_server(handler: &NodeHandler<Signal>, addr: &str) -> Result<Endpoint, ()> {
-    for _ in 0..5 {
-        match handler.network().connect_sync(Transport::Ws, addr) {
-            Ok((server, _)) => {
-                println!("Successfully connected to server");
-                return Ok(server);
-            }
-            Err(e) => println!("Failed to connect to server, {:?}", e)
-        }
-        std::thread::sleep(Duration::from_secs(1));
-    }
-    println!("Failed to connect to server, exiting");
-    Err(())
-}
-
 fn main() {
-    const ADDRESS: &str = "ws://127.0.0.1:80/keybd";
+    const TRANSPORT: Transport = Transport::Ws;
+    const ADDRESS: &str = "127.0.0.1:80";
     let (handler, listener) = node::split();
-    let server = unwrap_or_return!(connect_server(&handler, ADDRESS));
+
+    match handler.network().listen(TRANSPORT, ADDRESS) {
+        Ok((_id, real_addr)) => println!("Server running at {} by {}", real_addr, TRANSPORT),
+        Err(_) => return println!("Can not listen at {} by {}", ADDRESS, TRANSPORT),
+    };
+
 
     let handler2 = handler.clone();
 
@@ -58,23 +39,28 @@ fn main() {
 
     thread::spawn(inputbot::handle_input_events);
 
+    let mut clients: Vec<Endpoint> = Vec::new();
     listener.for_each(move |event| match event {
         NodeEvent::Network(net_event) => match net_event {
             NetEvent::Connected(_endpoint, _ok) => {}
-            NetEvent::Accepted(_, _) => unreachable!(),
+            NetEvent::Accepted(endpoint, _) => {
+                println!("Accepted connection from {}", endpoint);
+                clients.push(endpoint);
+            }
             NetEvent::Message(_endpoint, data) => {
-                let data: Signal = bson::from_slice(data).unwrap();
+                let data: Signal = serde_json::from_slice(&data).unwrap();
                 println!("Received: {:?}", data);
             },
             NetEvent::Disconnected(_endpoint) => {
-                println!("Disconnected from server, exiting");
-                process::exit(0);
+                println!("Client disconnected from server");
             },
         }
 
         NodeEvent::Signal(signal) => match signal {
             Signal::KeyPress { .. } => {
-                    handler2.network().send(server, &bson::to_vec(&signal).unwrap()[..]);
+                    clients.iter().for_each(|client| {
+                        handler2.network().send(*client, &serde_json::to_vec(&signal).unwrap()[..]);
+                    });
             }
         }
     });

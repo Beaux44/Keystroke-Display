@@ -6,9 +6,8 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-bson = { version = "2.6.1", features = ["serde_with"] }
 inputbot = { git = "https://github.com/obv-mikhail/InputBot", branch = "develop" }
 message-io = "0.14.6"
-no-panic = "0.1.19"
 serde = "1.0.158"
+serde_json = "1.0.96"
 url = "2.3.1"

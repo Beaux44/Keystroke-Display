@@ -1,4 +1,4 @@
-const socket = new WebSocket('ws://127.0.0.1:80/display');
+const socket = new WebSocket('ws://127.0.0.1:80/');
 let keysQueue = [],
     keysTimeout,
     content;
@@ -80,8 +80,8 @@ socket.addEventListener('open', () => {
 });
 
 
-socket.addEventListener('message', (event) => {
-    const data = JSON.parse(event.data);
+socket.addEventListener('message', async (event) => {
+    const data = JSON.parse(await event.data.text());
     switch(data.event) {
         case 'KeyPress': {
             if(!data.key.endsWith('Key'))
