@@ -14,19 +14,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - run: sudo apt-get install libudev-dev
       - uses: github/super-linter@v5.0.0
         env:
           DEFAULT_BRANCH: main
-          token: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   ubuntu-build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - run: sudo apt-get install libudev-dev
+      - uses: actions-rs/toolchain@v1.0.6
       - name: Build
         run: cargo build --verbose
   win-build:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Build
+        run: cargo build --verbose
+        env:
+          RUST_TRACEBACK: 1
+  mac-build:
+    runs-on: mac-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions-rs/toolchain@v1.0.6
       - name: Build
         run: cargo build --verbose
