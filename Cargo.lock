@@ -369,7 +369,6 @@ dependencies = [
  "message-io",
  "serde",
  "serde_json",
- "url",
 ]
 
 [[package]]
