@@ -24,7 +24,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: sudo apt-get install libudev-dev
-      - uses: actions-rs/toolchain@v1.0.6
       - name: Build
         run: cargo build --verbose
   win-build:
@@ -36,9 +35,8 @@ jobs:
         env:
           RUST_TRACEBACK: 1
   mac-build:
-    runs-on: mac-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions-rs/toolchain@v1.0.6
       - name: Build
         run: cargo build --verbose
