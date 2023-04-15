@@ -1,4 +1,4 @@
-const socket = new WebSocket('ws://127.0.0.1:80/');
+const socket = new WebSocket('ws://127.0.0.1:4444/');
 let keysQueue = [],
     keysTimeout,
     content;

@@ -14,7 +14,7 @@ enum Signal {
 
 fn main() {
     const TRANSPORT: Transport = Transport::Ws;
-    const ADDRESS: &str = "127.0.0.1:80";
+    const ADDRESS: &str = "127.0.0.1:4444";
     let (handler, listener) = node::split();
 
     match handler.network().listen(TRANSPORT, ADDRESS) {
