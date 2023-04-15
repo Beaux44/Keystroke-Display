@@ -97,3 +97,6 @@ socket.addEventListener('message', async (event) => {
     }
 });
 
+socket.addEventListener('close', () => {
+    document.getElementById("display").innerText = 'Websocket not connected';
+});
