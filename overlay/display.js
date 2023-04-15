@@ -61,6 +61,7 @@ function pushKeyPress(key) {
             keysQueue.map((el) => {
                 el.remove()
             });
+            keysQueue = [];
             content.style.transition = '';
         }, 400);
 
