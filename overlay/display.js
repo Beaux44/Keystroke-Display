@@ -1,6 +1,7 @@
 const socket = new WebSocket('ws://127.0.0.1:4444/');
 let keysQueue = [],
     keysTimeout,
+    transitionTimeout,
     content;
 
 function getSymbol({ key, shift }) {
@@ -48,13 +49,13 @@ function pushKeyPress(key) {
     if(keysQueue.length >= 24)
         keysQueue.shift();
 
-    if(keysTimeout !== undefined)
-        clearTimeout(keysTimeout);
+    clearTimeout(keysTimeout);
+    clearTimeout(transitionTimeout);
 
     updateDisplay();
 
     keysTimeout = setTimeout(() => {
-        setTimeout(() => {
+        transitionTimeout = setTimeout(() => {
             keysQueue = [];
             updateDisplay();
             content.style.transition = '';
