@@ -33,9 +33,8 @@ function getKey({ key, ctrl, shift }) {
     return ctrl ? `⇧${key}` : key;
 }
 
-function shiftKeyQueue() {
-    keysQueue[0].remove();
-    keysQueue.shift();
+function updateDisplay() {
+    content.innerText = keysQueue.join('');
 }
 
 function pushKeyPress(key) {
@@ -44,24 +43,20 @@ function pushKeyPress(key) {
 
     content.style.opacity = '100%';
 
-    const newEl = document.createElement("span");
-    newEl.innerText = key;
-    content.appendChild(newEl);
-
-    keysQueue.push(newEl);
+    keysQueue.push(key);
 
     if(keysQueue.length >= 24)
-        shiftKeyQueue();
+        keysQueue.shift();
 
     if(keysTimeout !== undefined)
         clearTimeout(keysTimeout);
 
+    updateDisplay();
+
     keysTimeout = setTimeout(() => {
         setTimeout(() => {
-            keysQueue.map((el) => {
-                el.remove()
-            });
             keysQueue = [];
+            updateDisplay();
             content.style.transition = '';
         }, 400);
 
