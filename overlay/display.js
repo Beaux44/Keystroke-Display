@@ -12,9 +12,12 @@ function getSymbol({ key, shift }) {
         Backslash: ['\\', '|'], Slash: ['/', '?'], Comma: [',', '<'], Period: ['.', '>'], Minus: ['-', '_'],
         Quote: ['\'', '\"'], Semicolon: [';', ':'], LBracket: ['[', '{'], RBracket: [']', '}'], Equal: ['=', '+'],
         Backquote: ['`', '~'], Enter: ['↴', '↴'], Backspace: ['⌫', '⌫'], Space: ['⎵', '⎵'], Delete: ['<Del>', '<Del>'],
+        Tab: ['⇥', '⇥'], Right: ['⤑', '⤑'], Left: ['⬸', '⬸'], Up: ['⇡', '⇡'], Down: ['⇣', '⇣'],
     }
 
-    return ALL_KEYS[key][shift ? 1 : 0];
+    if(ALL_KEYS[key] !== undefined) {
+        return ALL_KEYS[key][shift ? 1 : 0];
+    }
 }
 
 function getKey({ key, ctrl, shift }) {
@@ -27,7 +30,7 @@ function getKey({ key, ctrl, shift }) {
     if(key === undefined)
         return;
 
-    return ctrl ? `↑${key}` : key;
+    return ctrl ? `⇧${key}` : key;
 }
 
 function shiftKeyQueue() {
