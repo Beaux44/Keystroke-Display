@@ -4,28 +4,22 @@ let keysQueue = [],
     transitionTimeout,
     content;
 
-function getSymbol({ key, shift }) {
-    const ALL_KEYS = {
-        Numpad0: ['0', '0'], Numpad1: ['1', '1'], Numpad2: ['2', '2'], Numpad3: ['3', '3'], Numpad4: ['4', '4'],
-        Numpad5: ['5', '5'], Numpad6: ['6', '6'], Numpad7: ['7', '7'], Numpad8: ['8', '8'], Numpad9: ['9', '9'],
-        Numrow0: ['0', ')'], Numrow1: ['1', '!'], Numrow2: ['2', '@'], Numrow3: ['3', '#'], Numrow4: ['4', '$'],
-        Numrow5: ['5', '%'], Numrow6: ['6', '^'], Numrow7: ['7', '&'], Numrow8: ['8', '*'], Numrow9: ['9', '('],
-        Backslash: ['\\', '|'], Slash: ['/', '?'], Comma: [',', '<'], Period: ['.', '>'], Minus: ['-', '_'],
-        Quote: ['\'', '\"'], Semicolon: [';', ':'], LBracket: ['[', '{'], RBracket: [']', '}'], Equal: ['=', '+'],
-        Backquote: ['`', '~'], Enter: ['↴', '↴'], Backspace: ['⌫', '⌫'], Space: ['⎵', '⎵'], Delete: ['⌦', '⌦'],
-        Tab: ['⇥', '⇥'], Right: ['⤑', '⤑'], Left: ['⬸', '⬸'], Up: ['⇡', '⇡'], Down: ['⇣', '⇣'],
-    }
-
-    if(ALL_KEYS[key] !== undefined) {
-        return ALL_KEYS[key][shift ? 1 : 0];
-    }
-}
+const ALL_KEYS = {
+    Numpad0: ['0', '0'], Numpad1: ['1', '1'], Numpad2: ['2', '2'], Numpad3: ['3', '3'], Numpad4: ['4', '4'],
+    Numpad5: ['5', '5'], Numpad6: ['6', '6'], Numpad7: ['7', '7'], Numpad8: ['8', '8'], Numpad9: ['9', '9'],
+    Numrow0: ['0', ')'], Numrow1: ['1', '!'], Numrow2: ['2', '@'], Numrow3: ['3', '#'], Numrow4: ['4', '$'],
+    Numrow5: ['5', '%'], Numrow6: ['6', '^'], Numrow7: ['7', '&'], Numrow8: ['8', '*'], Numrow9: ['9', '('],
+    Backslash: ['\\', '|'], Slash: ['/', '?'], Comma: [',', '<'], Period: ['.', '>'], Minus: ['-', '_'],
+    Quote: ['\'', '\"'], Semicolon: [';', ':'], LBracket: ['[', '{'], RBracket: [']', '}'], Equal: ['=', '+'],
+    Backquote: ['`', '~'], Enter: ['↴', '↴'], Backspace: ['⌫', '⌫'], Space: ['⎵', '⎵'], Delete: ['⌦', '⌦'],
+    Tab: ['⇥', '⇥'], Right: ['⤑', '⤑'], Left: ['⬸', '⬸'], Up: ['⇡', '⇡'], Down: ['⇣', '⇣'],
+};
 
 function getKey({ key, ctrl, shift }) {
     if(key.length === 1) {
         key = shift ? key.toUpperCase() : key.toLowerCase();
-    } else {
-        key = getSymbol({ key, shift });
+    } else if(ALL_KEYS[key] !== undefined) {
+        key = ALL_KEYS[key][shift ? 1 : 0];
     }
 
     if(key === undefined)
