@@ -1,7 +1,7 @@
 # Keystroke-Display
 A simple overlay for OBS to display consecutive keystrokes. Primarily for programming, especially for Vim.
 
-This has as of yet only been tested on Windows, but I do not believe there are any compatibility concerns for Mac or Linux.
+This will work on Windows and Linux, but the `inputbot` crate unfortunately does not support Mac.
 
 https://user-images.githubusercontent.com/23005874/231338090-107b908e-7d72-41b1-999e-68e858ad2bd7.mp4
 
