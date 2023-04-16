@@ -92,9 +92,6 @@ function pushKeyPress(key) {
             combo = 1
             combo_streak = false;
         }
-
-        updateDisplay()
-
     } else {
         keysQueue.push(key);
         combo = 1
@@ -104,12 +101,12 @@ function pushKeyPress(key) {
 
     if(keysQueue.length >= 24)
         keysQueue.shift();
-        updateDisplay();
 
 
     clearTimeout(keysTimeout);
     clearTimeout(transitionTimeout);
 
+    updateDisplay();
 
     keysTimeout = setTimeout(() => {
         transitionTimeout = setTimeout(() => {
