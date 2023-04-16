@@ -15,4 +15,4 @@ I plan on releasing binaries eventually, but for now:
 
 ---
 ## Important Notes
-This program is by no means secure, and should only be used on trusted networks. Obviously avoid typing passwords especially if streaming, if you must, remember to hide the overlay in OBS and/or to turn off the input server altogether. Do not forget when this program is running! I will soon add support for a hotkey that tells the input server to start/stop sending inputs over the network. I will likely also have it automatically stop if there is no display (in other words if OBS is closed), but this won't stop anyone on the network from viewing inputs by simply going to the display page.
+Avoid typing passwords especially if streaming. If you must, remember to hide the overlay in OBS and/or to turn off the input server altogether. Do not forget when this program is running! I will soon add support for a hotkey that tells the input server to start/stop sending inputs.
