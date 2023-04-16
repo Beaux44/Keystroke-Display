@@ -20,6 +20,8 @@ function getKey({ key, ctrl, shift }) {
         key = shift ? key.toUpperCase() : key.toLowerCase();
     } else if(ALL_KEYS[key] !== undefined) {
         key = ALL_KEYS[key][shift ? 1 : 0];
+    } else {
+        key = undefined;
     }
 
     if(key === undefined)
