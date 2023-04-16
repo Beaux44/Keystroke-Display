@@ -27,7 +27,7 @@ fn main() {
 
     KeybdKey::bind_all(move |event| {
         match event {
-            LShiftKey | LControlKey => {}
+            LShiftKey | RShiftKey | LControlKey => {}
             _ => handler.signals()
                         .send(Signal::KeyPress{
                                 key: format!("{:?}", event),
