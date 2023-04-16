@@ -41,16 +41,16 @@ function updateDisplay() {
     keysQueue.forEach(element => {
         // Handles combos
         if (Array.isArray(element)) {
-            k = document.createElement('span')
+            let k = document.createElement('span')
             k.innerText = `${element[0]}`
-            cmb = document.createElement('span')
+            let cmb = document.createElement('span')
             cmb.innerText = `x${element[1]}`
             cmb.style.fontSize = '25px'
             content.appendChild(k)
             content.appendChild(cmb)
         // Regular keys
         } else {
-            el = document.createElement('span')
+            let el = document.createElement('span')
             el.innerText = element
             content.appendChild(el)
         }
