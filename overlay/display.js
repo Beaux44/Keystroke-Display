@@ -16,7 +16,7 @@ function getSymbol({ key, shift }) {
         Quote: ['\'', '\"'], Semicolon: [';', ':'], LBracket: ['[', '{'], RBracket: [']', '}'], Equal: ['=', '+'],
         Backquote: ['`', '~'], Enter: ['↴', '↴'], Backspace: ['⌫', '⌫'], Space: ['⎵', '⎵'], Delete: ['<Del>', '<Del>'],
         Tab: ['⇥', '⇥'], Right: ['⤑', '⤑'], Left: ['⬸', '⬸'], Up: ['⇡', '⇡'], Down: ['⇣', '⇣'],
-    }
+    };
 
     if(ALL_KEYS[key] !== undefined) {
         return ALL_KEYS[key][shift ? 1 : 0];
@@ -37,22 +37,22 @@ function getKey({ key, ctrl, shift }) {
 }
 
 function updateDisplay() {
-    content.innerHTML = ''
+    content.innerHTML = '';
     keysQueue.forEach(element => {
         // Handles combos
         if (Array.isArray(element)) {
-            let k = document.createElement('span')
-            k.innerText = `${element[0]}`
-            let cmb = document.createElement('span')
-            cmb.innerText = `x${element[1]}`
-            cmb.style.fontSize = '25px'
-            content.appendChild(k)
-            content.appendChild(cmb)
+            let k = document.createElement('span');
+            k.innerText = `${element[0]}`;
+            let cmb = document.createElement('span');
+            cmb.innerText = `x${element[1]}`;
+            cmb.style.fontSize = '25px';
+            content.appendChild(k);
+            content.appendChild(cmb);
         // Regular keys
         } else {
-            let el = document.createElement('span')
-            el.innerText = element
-            content.appendChild(el)
+            let el = document.createElement('span');
+            el.innerText = element;
+            content.appendChild(el);
         }
     });
 }
@@ -68,16 +68,16 @@ function pushKeyPress(key) {
                 // Handle first combo
                 keysQueue.push(key);
                 combo = combo + 1;
-                break
+                break;
             case 2:
                 // Remove last 2 items, so we can have a 'combo key' 
                 // Set combo_streak to true so we can handle the followingk keystokes differently
-                keysQueue.pop()
-                keysQueue.pop()
-                combo = combo + 1;  
+                keysQueue.pop();
+                keysQueue.pop();
+                combo = combo + 1;
                 keysQueue.push([key, combo]);
-                combo_streak = true
-                break
+                combo_streak = true;
+                break;
         }
 
 
@@ -86,15 +86,15 @@ function pushKeyPress(key) {
         if (key === keysQueue[keysQueue.length -1][0]) {
             // if it is just edit the second value of the array in the last position of keysque
             combo = combo + 1;
-            keysQueue[keysQueue.length -1][1] = combo
+            keysQueue[keysQueue.length -1][1] = combo;
         } else {
             keysQueue.push(key);
-            combo = 1
+            combo = 1;
             combo_streak = false;
         }
     } else {
         keysQueue.push(key);
-        combo = 1
+        combo = 1;
         combo_streak = false;
     }
 
@@ -111,8 +111,8 @@ function pushKeyPress(key) {
     keysTimeout = setTimeout(() => {
         transitionTimeout = setTimeout(() => {
             keysQueue = [];
-            combo_streak = false
-            combo = 1
+            combo_streak = false;
+            combo = 1;
             updateDisplay();
             content.style.transition = '';
         }, 400);
@@ -124,8 +124,8 @@ function pushKeyPress(key) {
             requestAnimationFrame(() => {
                 content.style.transition = 'opacity 0.4s';
                 content.style.opacity = '0%';
-            })
-        })
+            });
+        });
     }, 2500);
 }
 
