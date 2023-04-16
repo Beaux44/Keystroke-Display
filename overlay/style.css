@@ -1,8 +1,9 @@
 #display {
     margin: auto;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Oxygen', sans-serif;
     font-size: 3rem;
     background-color: #0004;
     color: #EEE;
     padding: 5px;
+    
 }
