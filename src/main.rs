@@ -51,7 +51,8 @@ fn main() {
                 let data: Signal = serde_json::from_slice(&data).unwrap();
                 println!("Received: {:?}", data);
             },
-            NetEvent::Disconnected(_endpoint) => {
+            NetEvent::Disconnected(endpoint) => {
+                clients.retain(|&x| x != endpoint);
                 println!("Client disconnected from server");
             },
         }
