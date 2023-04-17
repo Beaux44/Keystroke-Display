@@ -3,7 +3,8 @@ use inputbot;
 use message_io::node::{self, NodeEvent};
 use message_io::network::{NetEvent, Transport, Endpoint};
 use serde::{Serialize, Deserialize};
-use std::thread;
+use std::io::Write;
+use std::{thread, env, process};
 
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -14,12 +15,37 @@ enum Signal {
 
 fn main() {
     const TRANSPORT: Transport = Transport::Ws;
-    const ADDRESS: &str = "127.0.0.1:4444";
+    let args: Vec<String> = env::args().collect();
+    let addr: String;
+    let mut port = 3333;
+
+    if args.len() > 1 {
+        match args[1].parse::<u16>() {
+            Ok(p) => port = p,
+            Err(_) => {
+                println!("Invalid port number");
+                process::exit(1);
+            },
+        }
+    }
+
+    addr = format!("127.0.0.1:{}", port);
+
+    match std::fs::File::create("overlay/port.js") {
+        Ok(mut f) => {
+            f.write_all(format!("let address = 'ws://{}/';", addr).as_bytes()).unwrap();
+        },
+        Err(_) => {
+            println!("Could not create port.js file");
+            process::exit(1);
+        },
+    };
+
     let (handler, listener) = node::split();
 
-    match handler.network().listen(TRANSPORT, ADDRESS) {
+    match handler.network().listen(TRANSPORT, &addr) {
         Ok((_id, real_addr)) => println!("Server running at {} by {}", real_addr, TRANSPORT),
-        Err(_) => return println!("Can not listen at {} by {}", ADDRESS, TRANSPORT),
+        Err(_) => return println!("Can not listen at {} by {}", addr, TRANSPORT),
     };
 
 
