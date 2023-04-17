@@ -400,6 +400,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "453ad9f582a441959e5f0d088b02ce04cfe8d51a8eaf077f12ac6d3e94164ca6"
 
 [[package]]
+name = "keystroke-overlay"
+version = "0.1.0"
+dependencies = [
+ "inputbot",
+ "log",
+ "message-io",
+ "obs-wrapper",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "lazy_static"
 version = "1.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -574,17 +586,6 @@ name = "opaque-debug"
 version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "624a8340c38c1b80fd549087862da4ba43e08858af025b236e509b6649fc13d5"
-
-[[package]]
-name = "overlay"
-version = "0.1.0"
-dependencies = [
- "inputbot",
- "message-io",
- "obs-wrapper",
- "serde",
- "serde_json",
-]
 
 [[package]]
 name = "paste"

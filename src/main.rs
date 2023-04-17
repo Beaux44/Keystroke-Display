@@ -17,7 +17,7 @@ fn main() {
     const TRANSPORT: Transport = Transport::Ws;
     let args: Vec<String> = env::args().collect();
     let addr: String;
-    let mut port = 3333;
+    let mut port = 17508;
 
     if args.len() > 1 {
         match args[1].parse::<u16>() {
