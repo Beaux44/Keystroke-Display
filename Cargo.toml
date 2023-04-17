@@ -8,5 +8,15 @@ edition = "2021"
 [dependencies]
 inputbot = { git = "https://github.com/obv-mikhail/InputBot", branch = "develop" }
 message-io = "0.14.6"
+obs-wrapper = "0.4.1"
 serde = "1.0.158"
 serde_json = "1.0.96"
+
+[lib]
+path = "src/lib.rs"
+crate-type = ["cdylib"]
+
+[[bin]]
+name = "keystroke-overlay"
+path = "src/main.rs"
+
