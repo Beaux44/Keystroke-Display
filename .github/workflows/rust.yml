@@ -14,12 +14,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: sudo apt-get install libudev-dev libxtst-dev libxext-dev xorg-dev libinput-dev
+      - run: sudo apt-get install libudev-dev libxtst-dev libxext-dev xorg-dev libinput-dev libobs-dev
       - name: Build
         run: cargo build --verbose
   win-build:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
+      - run: choco install obs-studio
       - name: Build
         run: cargo build --verbose

@@ -1,5 +1,7 @@
 mod server;
 
+use std::ptr;
+use obs_wrapper::wrapper::PtrWrapper;
 use server::start_server;
 use log::*;
 use obs_wrapper::obs_sys;
@@ -16,6 +18,8 @@ struct KeyOverlayModule {
 
 struct KeyOverlaySrc {
     _source: SourceContext,
+    width: u32,
+    height: u32,
     browser: *mut obs_sys::obs_source_t,
 }
 
@@ -30,33 +34,45 @@ impl Sourceable for KeyOverlaySrc {
 
     fn create(create: &mut CreatableSourceContext<Self>, _source: SourceContext) -> Self {
         let settings = &mut create.settings;
+        log!(Level::Info, "BLAH BLAH BLAHA BLAH BLAHLA BLAHALB LAHLABN LAHLAB LAHALAB BLAGH BALH BLALH BLAH BLAHL BLAH LBALH blah");
 
-        let width = settings.get("browser_width").unwrap_or(900);
-        let height = settings.get("browser_height").unwrap_or(100);
-
-        let x = settings.get("browser_x").unwrap_or(0);
-        let y = settings.get("browser_y").unwrap_or(0);
+        let width = settings.get("width").unwrap_or(900);
+        let height = settings.get("height").unwrap_or(100);
 
         let browser;
 
-        unsafe {
-            let settings = obs_sys::obs_data_create();
-            obs_sys::obs_data_set_int(settings, obs_string!("width").as_ptr(), width as i64);
-            obs_sys::obs_data_set_int(settings, obs_string!("height").as_ptr(), height as i64);
-            obs_sys::obs_data_set_int(settings, obs_string!("x").as_ptr(), x as i64);
-            obs_sys::obs_data_set_int(settings, obs_string!("y").as_ptr(), y as i64);
-            obs_sys::obs_data_set_bool(settings, obs_string!("is_local_file").as_ptr(), true);
-            obs_sys::obs_data_set_string(settings,
-                                         obs_string!("local_file").as_ptr(),
-                                         obs_string!("C:/Users/beaux/Documents/doot/overlay/overlay/index.html").as_ptr());
+        let mut settings = DataObj::from_json(format!(r##"{{
+            "width": {},
+            "height": {},
+            "x": 0,
+            "y": 0,
+            "is_local_file": true,
+            "local_file": "C:/Users/beaux/Documents/doot/overlay/overlay/index.html"
+        }}"##, width, height)).unwrap();
 
+        unsafe {
             browser = obs_sys::obs_source_create_private(
                 obs_string!("browser_source").as_ptr(),
                 obs_string!("Browser Source").as_ptr(),
-                settings);
+                settings.as_ptr_mut());
+
+            let scene = obs_sys::obs_scene_from_source(obs_sys::obs_frontend_get_current_scene());
+            obs_sys::obs_scene_add(scene, browser);
         }
 
-        Self { _source, browser }
+        Self { _source, width, height, browser }
+    }
+}
+
+impl GetWidthSource for KeyOverlaySrc {
+    fn get_width(&mut self) -> u32 {
+        self.width
+    }
+}
+
+impl GetHeightSource for KeyOverlaySrc {
+    fn get_height(&mut self) -> u32 {
+        self.height
     }
 }
 
@@ -66,22 +82,23 @@ impl GetNameSource for KeyOverlaySrc {
     }
 }
 
+impl GetDefaultsSource for KeyOverlaySrc {
+    fn get_defaults(settings: &mut DataObj) {
+        settings.set_default::<u32>("width", 900u32);
+        settings.set_default::<u32>("height", 100u32);
+    }
+}
+
 impl GetPropertiesSource for KeyOverlaySrc {
     fn get_properties(&mut self) -> obs_wrapper::properties::Properties {
         let mut properties = Properties::new();
         properties
-            .add(obs_string!("browser_width"),
+            .add(obs_string!("width"),
                  obs_string!("Width"),
                  NumberProp::new_int().with_range(1u32..=3840))
-            .add(obs_string!("browser_height"),
+            .add(obs_string!("height"),
                  obs_string!("Height"),
-                 NumberProp::new_int().with_range(1u32..=2160))
-            .add(obs_string!("browser_x"),
-                 obs_string!("X"),
-                 NumberProp::new_int().with_range(0u32..=3840))
-            .add(obs_string!("browser_y"),
-                 obs_string!("Y"),
-                 NumberProp::new_int().with_range(0u32..=2160));
+                 NumberProp::new_int().with_range(1u32..=2160));
 
         properties
     }
@@ -99,9 +116,10 @@ impl Module for KeyOverlayModule {
     }
 
     fn load(&mut self, load_context: &mut LoadContext) -> bool {
-        // Create the source
         let source = load_context.create_source_builder::<KeyOverlaySrc>()
                                  .enable_get_name()
+                                 .enable_get_defaults()
+                                 .enable_get_properties()
                                  .with_icon(Icon::Text)
                                  .build();
 

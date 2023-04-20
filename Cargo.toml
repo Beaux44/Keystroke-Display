@@ -7,7 +7,7 @@ edition = "2021"
 inputbot = { git = "https://github.com/obv-mikhail/InputBot", branch = "develop" }
 log = "0.4.17"
 message-io = "0.14.6"
-obs-wrapper = "0.4.1"
+obs-wrapper = { git = "https://github.com/Beaux44/rust-obs-plugins.git", rev = "e591be5" }
 serde = "1.0.158"
 serde_json = "1.0.96"
 
