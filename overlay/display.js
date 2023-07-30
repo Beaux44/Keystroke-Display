@@ -14,19 +14,19 @@ const ALL_KEYS = {
     Backslash: ['\\', '|'], Slash: ['/', '?'], Comma: [',', '<'], Period: ['.', '>'], Minus: ['-', '_'],
     Quote: ['\'', '"'], Semicolon: [';', ':'], LBracket: ['[', '{'], RBracket: [']', '}'], Equal: ['=', '+'],
     Backquote: ['`', '~'], Enter: ['↴', '↴'], Backspace: ['⌫', '⌫'], Space: ['⎵', '⎵'], Delete: ['⌦', '⌦'],
-    Tab: ['⇥', '⇥'], Right: ['⤑', '⤑'], Left: ['⬸', '⬸'], Up: ['⇡', '⇡'], Down: ['⇣', '⇣'],
+    Tab: ['⇥', '⇥'], Right: ['⤑', '⤑'], Left: ['⬸', '⬸'], Up: ['⇡', '⇡'], Down: ['⇣', '⇣'], Escape: ['Esc', 'Esc']
 };
 
 function getKey({ key, ctrl, shift }) {
-    if(key.length === 1) {
+    if (key.length === 1) {
         key = shift ? key.toUpperCase() : key.toLowerCase();
-    } else if(ALL_KEYS[key] !== undefined) {
+    } else if (ALL_KEYS[key] !== undefined) {
         key = ALL_KEYS[key][shift ? 1 : 0];
     } else {
         key = undefined;
     }
 
-    if(key === undefined)
+    if (key === undefined)
         return;
 
     return ctrl ? `⇧${key}` : key;
@@ -44,7 +44,7 @@ function updateDisplay() {
             cmb.style.fontSize = '25px';
             content.appendChild(k);
             content.appendChild(cmb);
-        // Regular keys
+            // Regular keys
         } else {
             let el = document.createElement('span');
             el.innerText = element;
@@ -54,12 +54,12 @@ function updateDisplay() {
 }
 
 function pushKeyPress(key) {
-    if(key === undefined)
+    if (key === undefined)
         return;
 
     content.style.opacity = '100%';
     if (key === keysQueue[keysQueue.length - combo] && !(combo_streak)) {
-        switch(combo) {
+        switch (combo) {
             case 1:
                 // Handle first combo
                 keysQueue.push(key);
@@ -77,12 +77,12 @@ function pushKeyPress(key) {
         }
 
 
-    } else if (combo_streak){
+    } else if (combo_streak) {
         // check if the next key is another combo
-        if (key === keysQueue[keysQueue.length -1][0]) {
+        if (key === keysQueue[keysQueue.length - 1][0]) {
             // if it is just edit the second value of the array in the last position of keysque
             combo = combo + 1;
-            keysQueue[keysQueue.length -1][1] = combo;
+            keysQueue[keysQueue.length - 1][1] = combo;
         } else {
             keysQueue.push(key);
             combo = 1;
@@ -95,7 +95,7 @@ function pushKeyPress(key) {
     }
 
 
-    if(keysQueue.length >= 24)
+    if (keysQueue.length >= 24)
         keysQueue.shift();
 
 
@@ -134,9 +134,9 @@ socket.addEventListener('open', () => {
 
 socket.addEventListener('message', async (event) => {
     const data = JSON.parse(await event.data.text());
-    switch(data.event) {
+    switch (data.event) {
         case 'KeyPress': {
-            if(!data.key.endsWith('Key'))
+            if (!data.key.endsWith('Key'))
                 return;
 
             data.key = data.key.slice(0, -3);
