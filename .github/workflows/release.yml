@@ -29,9 +29,8 @@ jobs:
   win-build:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
-
-      - uses: actions/cache@v4
+      - name: Cache OBS Studio Executable
+        uses: actions/cache@v4
         id: cache
         with:
           path: C:/Program Files/obs-studio/bin/64bit/obs64.exe
