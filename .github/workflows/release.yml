@@ -1,0 +1,82 @@
+name: release
+
+on:
+  push:
+    branches:
+      - release
+    tags:
+      - 'v*.*.*'
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  ubuntu-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: sudo apt-get install libudev-dev libxtst-dev libxext-dev xorg-dev libinput-dev libobs-dev
+      - name: Build
+        run: |
+          cargo build --release
+
+      - name: Upload-artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: keystroke-display-ubuntu
+          path: target/release/
+
+  win-build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: C:/Program Files/obs-studio/bin/64bit/obs64.exe
+          key: ${{ runner.os }}-obs-studio
+
+      - name: Install OBS Studio
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: choco install obs-studio
+
+      - name: Build
+        run: |
+          cargo build --release
+
+      - name: Upload-artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: keystroke-display-windows
+          path: target/release/
+
+  release:
+    runs-on: ubuntu-latest
+    needs: [ubuntu-build, win-build]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: target/release/
+
+      - name: Create ZIP files for Ubuntu
+        run: |
+          cd target/release/keystroke-display-ubuntu
+          zip -r keystroke-display-ubuntu.zip *
+
+      - name: Create ZIP files for Windows
+        run: |
+          cd target/release/keystroke-display-windows
+          zip -r keystroke-display-windows.zip *
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          files: |
+            target/release/keystroke-display-ubuntu/keystroke-display-ubuntu.zip
+            target/release/keystroke-display-windows/keystroke-display-windows.zip
