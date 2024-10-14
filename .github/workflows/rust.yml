@@ -1,5 +1,7 @@
 name: Rust
 
+
+
 on:
   push:
     branches: ['main']
@@ -14,7 +16,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: sudo apt-get install libudev-dev libxtst-dev libxext-dev xorg-dev libinput-dev libobs-dev
+      - run: |
+          sudo apt-get update -y
+          sudo apt-get install libudev-dev libxtst-dev libxext-dev xorg-dev libinput-dev libobs-dev
       - name: Build
         run: cargo build --verbose
   win-build:
