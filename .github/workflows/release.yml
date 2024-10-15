@@ -82,7 +82,7 @@ jobs:
       - name: Create ZIP files for Ubuntu Standalone
         run: |
           cd target/release/keystroke-display-standalone-ubuntu
-          zip -r keystroke-display-ubuntu.zip *
+          zip -r keystroke-display-standalone-ubuntu.zip *
       
       - name: Create ZIP files for Ubuntu Plugin
         run: |
@@ -92,7 +92,7 @@ jobs:
       - name: Create ZIP files for Windows Standalone
         run: |
           cd target/release/keystroke-display-standalone-windows
-          zip -r keystroke-display-windows.zip *
+          zip -r keystroke-display-standalone-windows.zip *
       
       - name: Create ZIP files for Windows Plugin
         run: |
@@ -105,5 +105,7 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN }}
           files: |
-            target/release/keystroke-display-ubuntu/keystroke-display-ubuntu.zip
-            target/release/keystroke-display-windows/keystroke-display-windows.zip
+            target/release/keystroke-display-ubuntu/keystroke-display-standalone-ubuntu.zip
+            target/release/keystroke-display-ubuntu/keystroke-display-plugin-ubuntu.zip
+            target/release/keystroke-display-windows/keystroke-display-standalone-windows.zip
+            target/release/keystroke-display-windows/keystroke-display-plugin-windows.zip
