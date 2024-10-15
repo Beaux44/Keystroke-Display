@@ -20,38 +20,44 @@ jobs:
         run: |
           cargo build --release
 
-      - name: Upload-artifacts
+      - name: Upload-artifacts-standalone
         uses: actions/upload-artifact@v4
         with:
-          name: keystroke-display-ubuntu
+          name: keystroke-display-standalone-ubuntu
           path: |
             target/release/keystroke-overlay-standalone
+
+      - name: Upload-artifacts-plugin
+        uses: actions/upload-artifact@v4
+        with:
+          name: keystroke-display-plugin-ubuntu
+          path: |
             target/release/libkeystroke_overlay.so
 
   win-build:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/cache@v4
-        id: cache
-        with:
-          path: C:/Program Files/obs-studio/bin/64bit/obs64.exe
-          key: ${{ runner.os }}-obs-studio
 
       - name: Install OBS Studio
-        if: steps.cache.outputs.cache-hit != 'true'
         run: choco install obs-studio
 
       - name: Build
         run: |
           cargo build --release
 
-      - name: Upload-artifacts
+      - name: Upload-artifacts-standalone
         uses: actions/upload-artifact@v4
         with:
-          name: keystroke-display-windows
+          name: keystroke-display-standalone-windows
           path: |
             target/release/keystroke-overlay-standalone.exe
+      
+      - name: Upload-artifacts-plugin
+        uses: actions/upload-artifact@v4
+        with:
+          name: keystroke-display-plugin-windows
+          path: |
             target/release/keystroke-overlay-standalone.dll
 
   release:
@@ -68,18 +74,30 @@ jobs:
       
       - name: Copy overlay folder
         run: |
-          cp -r overlay/ target/release/keystroke-display-ubuntu
-          cp -r overlay/ target/release/keystroke-display-windows
+          cp -r overlay/ target/release/keystroke-display-standalone-ubuntu
+          cp -r overlay/ target/release/keystroke-display-plugin-ubuntu
+          cp -r overlay/ target/release/keystroke-display-standalone-windows
+          cp -r overlay/ target/release/keystroke-display-plugin-windows
 
-      - name: Create ZIP files for Ubuntu
+      - name: Create ZIP files for Ubuntu Standalone
         run: |
-          cd target/release/keystroke-display-ubuntu
+          cd target/release/keystroke-display-standalone-ubuntu
           zip -r keystroke-display-ubuntu.zip *
-
-      - name: Create ZIP files for Windows
+      
+      - name: Create ZIP files for Ubuntu Plugin
         run: |
-          cd target/release/keystroke-display-windows
+          cd target/release/keystroke-display-plugin-ubuntu
+          zip -r keystroke-display-plugin-ubuntu.zip *
+
+      - name: Create ZIP files for Windows Standalone
+        run: |
+          cd target/release/keystroke-display-standalone-windows
           zip -r keystroke-display-windows.zip *
+      
+      - name: Create ZIP files for Windows Plugin
+        run: |
+          cd target/release/keystroke-display-plugin-windows
+          zip -r keystroke-display-plugin-windows.zip *
 
       - name: Release
         uses: softprops/action-gh-release@v2
