@@ -105,7 +105,7 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN }}
           files: |
-            target/release/keystroke-display-ubuntu/keystroke-display-standalone-ubuntu.zip
-            target/release/keystroke-display-ubuntu/keystroke-display-plugin-ubuntu.zip
-            target/release/keystroke-display-windows/keystroke-display-standalone-windows.zip
-            target/release/keystroke-display-windows/keystroke-display-plugin-windows.zip
+            target/release/keystroke-display-standalone-ubuntu/keystroke-display-standalone-ubuntu.zip
+            target/release/keystroke-display-plugin-ubuntu/keystroke-display-plugin-ubuntu.zip
+            target/release/keystroke-display-standalone-windows/keystroke-display-standalone-windows.zip
+            target/release/keystroke-display-plugin-windows/keystroke-display-plugin-windows.zip
