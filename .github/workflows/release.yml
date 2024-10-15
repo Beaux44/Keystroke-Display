@@ -58,7 +58,7 @@ jobs:
         with:
           name: keystroke-display-plugin-windows
           path: |
-            target/release/keystroke-overlay-standalone.dll
+            target/release/keystroke_overlay.dll
 
   release:
     runs-on: ubuntu-latest
